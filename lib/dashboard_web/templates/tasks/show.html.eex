@@ -1,0 +1,17 @@
+<h1><%= @task.name %></h1>
+
+<p><%= @task.description %></p>
+
+<%= form_for @conn, Routes.tasks_run_path(@conn, :run, @task.id), fn f -> %>
+  <%= for input <- @task.inputs do %>
+    <%= label f, input.label %>
+    <%# NOTE: "inputs[][key]" is used to pass the inputs as an array of objects %>
+    <%= text_input f, "inputs[#{input.id}]", value: input.default, placeholder: input.placeholder %>
+  <% end %>
+  
+  <%= submit "Run" %>
+<% end %>
+
+<%= if assigns[:result] do %>
+  <%= Jason.encode!(@result, pretty: true) %>
+<% end %>

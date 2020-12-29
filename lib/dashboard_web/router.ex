@@ -16,7 +16,15 @@ defmodule DashboardWeb.Router do
   scope "/", DashboardWeb do
     pipe_through :browser
 
-    get "/", PageController, :index
+    get "/", Tasks.IndexController, :index
+  end
+
+  scope "/tasks", DashboardWeb.Tasks, as: :tasks do
+    pipe_through :browser
+
+    get "/", IndexController, :index
+    get "/:id", ShowController, :show
+    post "/:id/run", RunController, :run
   end
 
   # Other scopes may use custom stacks.
